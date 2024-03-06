@@ -66,3 +66,12 @@
   background-color: #ddd;
   margin: 5px 0;
 }
+
+.make-order-button {
+  margin: 10px 10px;
+}
+
+.close-dialog-button {
+  background-color: #ff0000;
+  color: #fff;
+}

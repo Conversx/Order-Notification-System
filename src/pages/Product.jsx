@@ -5,7 +5,8 @@ import OrderDialog from '../components/OrderDialog';
 import Notification from '../components/Notification'; // Import the Notification component
 import './Product.css';
 import '../components/OrderDialog.css';
-import '../components/Notification.css'; // Import the Notification CSS file
+import '../components/Notification.css';
+import mqtt from 'mqtt';
 
 const Product = () => {
   const [isAddProductPopupOpen, setAddProductPopupOpen] = useState(false);
@@ -134,6 +135,24 @@ const Product = () => {
     }, 3000); // Clear the notification after 3 seconds
   };
 
+  const handleMakeOrder = () => {
+    // Your existing logic for making the order
+
+    // Add code to send "FINISH" to Netpie MQTT
+    const client = mqtt.connect('mqtt://mqtt.netpie.io', {
+      username: 'ZPgwZTyrd4XePRGWmQKULQ7cDEaVTNxj',
+      password: 'iXHCSRZ2XT65CKYLBnQWbsQrqeBcnEfs',
+    });
+
+    client.on('connect', () => {
+      console.log('Connected to MQTT');
+      client.publish('@msg/lab_ict_kps/command', 'FINISH');
+      client.end();
+    });
+
+    // Rest of your existing logic
+  };
+
   return (
     <div className="container">
       <h2>Product</h2>
@@ -198,6 +217,7 @@ const Product = () => {
         onClose={closeOrderDialog}
         orderedProducts={orderedProducts}
         onDeleteOrder={handleDeleteOrder}
+        onMakeOrder={handleMakeOrder}
       />
 
       {notification && <Notification message={notification} onClose={() => setNotification(null)} />}

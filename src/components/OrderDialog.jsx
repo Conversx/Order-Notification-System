@@ -1,14 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './OrderDialog.css';
 
-const OrderDialog = ({ isOpen, onClose, orderedProducts, onDeleteOrder }) => {
+const OrderDialog = ({ isOpen, onClose, orderedProducts, onDeleteOrder, onMakeOrder }) => {
+  const [orderSuccess, setOrderSuccess] = useState(false);
+
   const handleClose = () => {
     onClose();
-    // ไม่ต้องเรียก setOrderDialogOpen([]) ในที่นี้ เนื่องจากตัวคุณสมบัตินี้จะถูกปรับเปลี่ยนจากข้างนอก (ใน Product.jsx)
+    // No need to call setOrderDialogOpen([]) here, as mentioned in the original code.
   };
 
   const handleDeleteOrder = (productId) => {
     onDeleteOrder(productId);
+  };
+
+  const handleMakeOrder = () => {
+    onMakeOrder();
+    setOrderSuccess(true);
+    
   };
 
   if (!isOpen) {
@@ -16,23 +24,39 @@ const OrderDialog = ({ isOpen, onClose, orderedProducts, onDeleteOrder }) => {
   }
 
   return (
-    <div className="order-dialog-overlay">
-      <div className="order-dialog">
-        <h2>Your Order</h2>
-        <ul>
-          {orderedProducts.map((product, index) => (
-            <React.Fragment key={product.pID}>
-              <li>
-                <span>{product.pName} - {product.price}</span>
-                <button className="delete-icon" onClick={() => handleDeleteOrder(product.pID)}>
-                  🗑️
-                </button>
-              </li>
-              {index < orderedProducts.length - 1 && <hr />} {/* เพิ่มเส้นแบ่งระหว่างรายการสินค้า */}
-            </React.Fragment>
-          ))}
-        </ul>
-        <button onClick={handleClose}>Close</button>
+    <div className={`order-dialog-overlay${orderSuccess ? ' order-success' : ''}`}>
+      <div className={`order-dialog${orderSuccess ? ' order-success-dialog' : ''}`}>
+        {orderSuccess ? (
+          <>
+            <h2>Order Successful!</h2>
+            <button className="finish-button" onClick={handleClose}>
+              FINISH
+            </button>
+          </>
+        ) : (
+          <>
+            <h2>Your Order</h2>
+            <ul>
+              {orderedProducts.map((product, index) => (
+                <React.Fragment key={product.pID}>
+                  <li>
+                    <span>{product.pName} - {product.price}</span>
+                    <button className="delete-icon" onClick={() => handleDeleteOrder(product.pID)}>
+                      🗑️
+                    </button>
+                  </li>
+                  {index < orderedProducts.length - 1 && <hr />}
+                </React.Fragment>
+              ))}
+            </ul>
+            <div className="button-container">
+              <button onClick={handleMakeOrder} className="make-order-button" disabled={orderedProducts.length === 0}>
+                Make Order
+              </button>
+              <button className='close-dialog-button' onClick={handleClose}>Close</button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
