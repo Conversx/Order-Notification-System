@@ -1,0 +1,75 @@
+.popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  transform: translate(-50%, -50%);
+  background-color: #1e1e1e;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  z-index: 1000;
+}
+
+.popup-content {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  color: #ffffff;
+  align-items: flex-start;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 50px;
+  color: #ff0000;
+}
+
+.popup.open {
+  display: block;
+}
+
+/* Style for the form */
+form {
+  display: grid;
+  gap: 10px;
+}
+
+label {
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* จัดตำแหน่ง label ทางซ้าย */
+  margin-bottom: 10px; /* เพิ่มระยะห่างของ label ด้านล่าง */
+}
+
+label input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 165%;
+  box-sizing: border-box;
+}
+
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.AddButton {
+  background-color: #4caf50;
+  color: #fff;
+  width: 165%;
+}
+
+.close-button {
+  background-color: #ff0000;
+  color: #fff;
+  width: 165%;
+}
