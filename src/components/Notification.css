@@ -1,5 +1,14 @@
 /* src/components/Notification.css */
-.notification {
+@keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .notification {
     font-weight: bold;
     position: fixed;
     bottom: 20px;
@@ -9,6 +18,7 @@
     color: rgb(255, 255, 255);
     padding: 15px;
     border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.5s ease-in-out; /* Apply the fadeIn animation with a duration of 0.5 seconds */
   }
   
