@@ -2,8 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import AddProductPopup from '../components/AddProduct';
 import OrderDialog from '../components/OrderDialog';
+import Notification from '../components/Notification'; // Import the Notification component
 import './Product.css';
-import '../components/OrderDialog.css'; // Import the OrderDialog.css file
+import '../components/OrderDialog.css';
+import '../components/Notification.css'; // Import the Notification CSS file
 
 const Product = () => {
   const [isAddProductPopupOpen, setAddProductPopupOpen] = useState(false);
@@ -14,6 +16,8 @@ const Product = () => {
   const [orderedProducts, setOrderedProducts] = useState([]);
   const [isOrderDialogOpen, setOrderDialogOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [notification, setNotification] = useState(null);
+  const [showNotificationCircle, setShowNotificationCircle] = useState(false);
 
   useEffect(() => {
     fetchProductData();
@@ -79,6 +83,9 @@ const Product = () => {
   const handleOrderProduct = (productId) => {
     const orderedProduct = products.find((product) => product.pID === productId);
     setOrderedProducts((prevOrderedProducts) => [...prevOrderedProducts, orderedProduct]);
+
+    // Show a notification when an order is added to the cart
+    showNotification('Product added to cart🛒🛒🛒');
   };
 
   const handleDeleteOrder = (productId) => {
@@ -115,6 +122,16 @@ const Product = () => {
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
+  };
+
+  const showNotification = (message) => {
+    setNotification(message);
+    setShowNotificationCircle(true);
+
+    setTimeout(() => {
+      setNotification(null);
+      setShowNotificationCircle(false);
+    }, 3000); // Clear the notification after 3 seconds
   };
 
   return (
@@ -171,6 +188,7 @@ const Product = () => {
         <button className="CartButton" onClick={() => setOrderDialogOpen(true)}>
           🛒
         </button>
+        {showNotificationCircle && <div className="notification-circle"></div>}
       </div>
 
       <AddProductPopup isOpen={isAddProductPopupOpen} onClose={closeAddProductPopup} onAddProduct={handleAddProduct} />
@@ -179,9 +197,10 @@ const Product = () => {
         isOpen={isOrderDialogOpen}
         onClose={closeOrderDialog}
         orderedProducts={orderedProducts}
-        onDeleteOrder={handleDeleteOrder} // ให้ใช้ onDeleteOrder แทน onDeleteProduct
+        onDeleteOrder={handleDeleteOrder}
       />
 
+      {notification && <Notification message={notification} onClose={() => setNotification(null)} />}
     </div>
   );
 };
